@@ -97,7 +97,7 @@ INSERT INTO transactions (transaction_id, customer_id, product_id, transaction_d
 (18, 18, 18, '2024-05-18', 2, 180.00),
 (19, 19, 19, '2024-05-19', 1, 600.00),
 (20, 20, 20, '2024-05-20', 1, 800.00);
-drop table products
+drop table products;
 show tables;
 select * from customers;
 select * from products;
@@ -106,39 +106,39 @@ select * from transactions;
 select c.customer_id , c.name, c.city, t.quantity from customers c
 inner join transactions t
 on c.customer_id = t.customer_id
-where t.quantity = 2
+where t.quantity = 2;
 -- inner join
 
 select c.*, t.*  from customers c  -- (.* print all the data) 
 inner join transactions t
 on c.customer_id = t.customer_id
-where t.quantity = 2
+where t.quantity = 2;
 
 INSERT INTO customers (customer_id, name, email, city) VALUES
 (21, 'monu Doe', 'monu.doe@gmail.com', 'New York'),
-(22, 'swati Doe', 'sona.doe@gmail.com', 'Itlay')
+(22, 'swati Doe', 'sona.doe@gmail.com', 'Itlay');
 
 INSERT INTO products (product_id, product_name, price) VALUES
 (21, 'PC', 1000.00),
-(22, 'MAC', 18000.00)
+(22, 'MAC', 18000.00);
 
 select p.product_name from products p
 left join transactions t
-on p.product_id = t.product_id
+on p.product_id = t.product_id;
 
 select c.customer_id, t.transaction_date from customers c
 left join transactions t
-on c.customer_id  = t.customer_id
+on c.customer_id  = t.customer_id;
 
 select t.transaction_id, c.name, p.product_name
 from transactions t
 inner join customers c on   t.customer_id = c.customer_id
-inner join products p on t.product_id = p.product_id
+inner join products p on t.product_id = p.product_id;
 -- retrieve all transaction along with customer name and product name
 
 select t.transaction_id , c.name, c.customer_id from transactions t
 left join customers c
-On t.customer_id  = c.customer_id
+On t.customer_id  = c.customer_id;
 -- List all transactions along with the names of the customers who made those transactions. 
 
 select t.transaction_id, c.name, t.total_amount from transactions t
@@ -168,14 +168,14 @@ where t.transaction_date >= '2024-04-01' and t.transaction_date <= '2024-06-01';
 select c.name, p.product_id from customers c
 inner join transactions t on c.customer_id = t.customer_id
 inner join products p on  t.product_id = p.product_id
-where p.product_name = 'Laptop'
+where p.product_name = 'Laptop';
 -- -- List the names of customers who have purchased the product 'Laptop'. 
 
 select c.* , t.* from customers c
 left join transactions t on c.customer_id = t.customer_id
 union
 select c.* , t.* from customers c
-right join transactions t on c.customer_id = t.customer_id
+right join transactions t on c.customer_id = t.customer_id;
 -- retieve all the data instead of full outer join we do left + right join 
 
 CREATE TABLE students (
@@ -297,8 +297,8 @@ INSERT INTO shapes (shape_id, shape_name) VALUES
 (2, 'Square'),
 (3, 'Triangle');
 
-select * from colors
-select * from shapes
+select * from colors;
+select * from shapes;
 
 
 select s.shape_name, c.color_name from colors c
@@ -322,7 +322,7 @@ cross join products p;
 
 select t.transaction_id, c.name, p.product_name from transactions t
 left join  customers c on t.customer_id = c.customer_id
-left join  products p on t.product_id = p.product_id
+left join  products p on t.product_id = p.product_id;
 --  1. Write a query to list all transactions along with the customer names and product names
 
 select p.* from products p
@@ -335,5 +335,4 @@ inner join transactions t on p.product_id  = t.product_id
 inner join customers c on c.customer_id = t.customer_id
 where p.product_name is not NULL;	
 -- 3. Write a query to find the products that have been purchased by every customer
-
 
