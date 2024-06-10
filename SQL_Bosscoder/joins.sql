@@ -336,3 +336,9 @@ inner join customers c on c.customer_id = t.customer_id
 where p.product_name is not NULL;	
 -- 3. Write a query to find the products that have been purchased by every customer
 
+
+
+
+
+
+
