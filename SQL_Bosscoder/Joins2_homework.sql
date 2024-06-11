@@ -77,27 +77,23 @@ VALUES
     (4, 101, 1004);
 
  
-select DepartmentID from faculty 
-union
-select DepartmentID from Student; 
-select f.FID, f.FName, f.salary from faculty f
+select distinct f.FID, f.FName, f.salary from faculty f
+inner join Student s on s.DepartmentID = f.DepartmentID
 where f.position = 'HOD';
+
  -- TASK 6: Display all the department numbers available with the Faculty and STUDENT tables avoiding duplicates.
 -- List the F ID, first name, Salary of all Faculty working as HOD.
 
-select DepartmentID from faculty 
-union ALL
-select DepartmentID from Student;
-select f.FID, f.FName, f.salary from faculty f;
+select f.DepartmentID from faculty f
+inner join Student s on s.DepartmentID = f.DepartmentID;
+
 -- TASK 7: Display all the department numbers available with the Faculty and STUDENT tables without avoiding duplicates. 
  
-select DepartmentID from faculty 
-Except
-select DepartmentID from Student;
+select d.DepartmentID from faculty f
+inner join department d on f.DepartmentID =  d.DepartmentID
+inner join student s on s.DepartmentID =  d.DepartmentID
+where d.DepartmentID NOT iN(s.DepartmentID);
 
-select DepartmentID from Student;
-Except
-select DepartmentID from faculty 
  -- TASK 8:Display all the department numbers available with the Faculty but not in the STUDENT table and vice versa. 
  
 alter table faculty add column position varchar(50);
@@ -106,6 +102,7 @@ update faculty set  position = 'Manager' where FID = 101;
 update faculty set  position = 'Principal' where FID = 102;
 update faculty set  position = 'Teacher' where FID = 103;
 
+set sql_safe_updates  = 0;
 
 select * from faculty;
 select * from student;

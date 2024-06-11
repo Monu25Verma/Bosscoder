@@ -46,12 +46,33 @@ order by count(distinct customer_id) desc limit 1);
 
 select city, count(customer_id) AS cnt_city from customers
 group by city
-having count(customer_id) > 2
+having count(customer_id) > 2;
 -- 6. List the city name and the count of customers for cities that have more 
 -- than 2 customers
 
 
 -- HOMEWORK 
+select * from products;
+select * from transactions;
+select * from customers;
+
+select product_name from products
+where product_id IN (select product_id from transactions
+    GROUP BY product_id
+    HAVING COUNT(transaction_id) = 1
+);
 -- 1. Identify products that have been purchased exactly once
+
+select name from customers 
+where customer_id  =
+	(select customer_id from transactions
+	where product_id =
+		(select product_id from products
+		where product_name = 'tv'
+		)
+	group by customer_id
+	order by count(transaction_id) desc 
+    limit 1
+	);
 -- 2. Find the names of customers who have purchased tv the most
  
