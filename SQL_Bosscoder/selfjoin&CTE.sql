@@ -36,7 +36,7 @@ inner join employees e2
 on e1.employee_id = e2.manager_id
 group by e1.employee_name  				-- or group by 1  				
 having count(e1.employee_id) > 1
--- List all managers who manage more than one employee
+-- List all managers who manage  to have more than one employee
 
 
 
