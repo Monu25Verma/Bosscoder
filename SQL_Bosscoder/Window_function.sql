@@ -57,8 +57,8 @@ from sales;
 
 select *, 
 row_number() over(partition by region order by sales_amount desc)AS row_num,
-rank() over(partition by region order by sales_amount desc)AS row_num,
-dense_rank() over(partition by region order by sales_amount desc)AS row_num
+rank() over(partition by region order by sales_amount desc)AS rank_num,
+dense_rank() over(partition by region order by sales_amount desc)AS dense_num
 from sales;
 -- comapere row_number, ran, dense_rank 
 
@@ -100,19 +100,46 @@ WHERE sales_rank = 1;
 -- Determine the best sales month for each sales representative
 
 -- HOMEWORK
-select * from(
-	select sum(sales_amount) AS total_sales,
-    dense_rank() over(PARTITION by region, sales_rep order by sum(sales_amount) desc) AS rnk_sales
-    from sales_performance
-    group by sales_rep, region;
+select sales_rep, region, sum(sales_amount),
+dense_rank() over(partition by region order by sum(sales_amount) desc) AS total_sales
+from sales_performance
+group by region, sales_rep;
+
 -- 1. Rank sales representatives by their total sales in each region, handling ties without gaps in ranking
 
-select *, 
-rank() over(partition by region, sales_month order by sales_amount desc) AS rnk_month
-from sales_performance
-where sales_amount = 1
--- 2. List the sales representatives who led the sales in each region for each month, without skipping months 
+select sales_rep, region, sales_amount
+	from (
+		select sales_rep, region, sales_amount,
+		dense_rank() over(partition by region, sales_month order by sales_amount desc) AS rank_amount
+		from sales_performance
+        ) AS lead_man
+	where rank_amount = 1
+-- 2. List the sales representatives who leads the sales in each region for each month, without skipping months 
 
+select * from crd_card;
+create table crd_card(
+issue_month int, 
+card_name varchar(50),
+issued_amount int,
+issue_year date
+);
+
+insert into crd_card(issue_month, card_name, issued_amount, issue_year) values
+(1, 'chaes reserve', 170000, 2021),
+(2, 'chaes reserve', 175000, 2021),
+(3, 'chaes reserve', 180000, 2021),
+(3, 'chaes flex', 65000, 2021),
+(4, 'chaes flex', 70000, 2021);
+
+alter table crd_card modify issue_year INT;
+
+-- get card name  and how many cards where issue in its card, where issue in launch month
+select card_name, issued_amount from(
+	select card_name, issue_month, issued_amount,
+	row_number() over(partition by card_name order by issue_month, issued_amount) AS ROW_num
+	from crd_card
+)A
+ where ROW_num = 1
 
 
 
